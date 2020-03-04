@@ -1,0 +1,90 @@
+---
+title: "Academic Scores of NCAA Cross Country and Track Teams"
+author: "Phoebe Colvin Oehmig"
+output:
+  html_document:
+    code_folding: hide
+
+---
+
+```{r}
+NCAA <- read.csv("NCAAacademics.csv")
+```
+
+# Introduction
+
+In 2004 the National Collegiate Athletic Association (NCAA) developed a means to measure teams’ academic success called the Academic Progress Rate (APR). The APR is an incentive-based approach for institutions to encourage the academic progress of its student-athletes. A study was created by the NCAA to provide public access to team-level APR scores. The APR score is determined by eligibility rates, retention, and athlete counts. The highest APR score is 1000, and a team must earn a four-year average of 930 in order to compete in championships. Only scholarship student-athletes are included in each team’s APR score. The APR scores presented in this report are an aggregated average of each team's APR scores from 2010-2014.
+
+As an NCAA DIII Cross Country, Indoor, and Outdoor Track and Field female athlete I am interested in looking at the four-year average APR scores of my sports, by teams and gender. Which gender and which of these three teams have the highest APR scores? Furthermore, I am interested in seeing how the average four-year APR scores for cross country, indoor, and outdoor track teams compare to the average APR scores across all NCAA sports. Are NCAA cross country, indoor, and outdoor track teams on average more or less academic than the average NCAA sports team?
+
+
+# Results
+
+#### Overall NCAA Team Scores
+
+```{r}
+#mean four year score
+mean(NCAA$FOURYEAR_SCORE)
+boxplot(NCAA$FOURYEAR_SCORE, ylim=c(800,1000), ylab= "Average APR Score", xlab= "All Sports", main= "Average NCAA Team APR Score")
+```
+
+The average four year score across all NCAA sports was `r mean(NCAA$FOURYEAR_SCORE)`.
+
+
+
+#### Cross Country NCAA Team Scores
+
+```{r}
+# Cross country mean four year score
+NCAA_XC <- NCAA[NCAA$SPORT_CODE==21|NCAA$SPORT_CODE==3,]
+NCAA_XC$SPORT_NAME <- factor(NCAA_XC$SPORT_NAME)
+
+tapply(NCAA_XC$FOURYEAR_SCORE, NCAA_XC$SPORT_NAME, mean)
+
+boxplot(NCAA_XC$FOURYEAR_SCORE ~ NCAA_XC$SPORT_NAME, ylim=c(800,1000), ylab= "Average APR Score", xlab= "Gender", main= "Average NCAA Cross Country Team Score", col=c("blue", "pink"))
+
+```
+
+
+The average four year score for cross country was `r mean(NCAA_XC$FOURYEAR_SCORE)`. The womens' cross country teams have higher four year average APR scores than mens' cross country teams. 
+
+
+
+#### Indoor Track NCAA Team Scores
+
+```{r}
+#Indoor track mean four year score
+NCAA_indoor <- NCAA[NCAA$SPORT_CODE==14|NCAA$SPORT_CODE==34,]
+NCAA_indoor$SPORT_NAME <- factor(NCAA_indoor$SPORT_NAME)
+
+tapply(NCAA_indoor$FOURYEAR_SCORE, NCAA_indoor$SPORT_NAME, mean)
+
+boxplot(NCAA_indoor$FOURYEAR_SCORE ~ NCAA_indoor$SPORT_NAME, ylim=c(800,1000), ylab= "Average APR Score", xlab= "Gender", main= "Average NCAA Indoor Track Team Score", col=c("blue", "pink"))
+
+```
+
+The average four year score for indoor track was `r mean(NCAA_indoor$FOURYEAR_SCORE)`. The womens' indoor track teams have higher four year average APR scores than mens' indoor track teams. 
+
+
+
+#### Outdoor Track NCAA Team Scores
+
+```{r}
+#Track four year score
+NCAA_Track <- NCAA[NCAA$SPORT_CODE==15|NCAA$SPORT_CODE==35,]
+NCAA_Track$SPORT_NAME <- factor(NCAA_Track$SPORT_NAME)
+
+tapply(NCAA_Track$FOURYEAR_SCORE, NCAA_Track$SPORT_NAME, mean)
+
+boxplot(NCAA_Track$FOURYEAR_SCORE ~ NCAA_Track$SPORT_NAME, ylim=c(800,1000), ylab= "Average APR Score", xlab= "Gender", main= "Average NCAA Outdoor Track Team Score", col=c("blue", "pink"))
+```
+
+The average four year score for outdoor track was `r mean(NCAA_Track$FOURYEAR_SCORE)`. The womens' outdoor track teams have higher four year average APR scores than mens' outdoor track teams. 
+
+# Discussion
+
+Cross country and track athletes are typically stereotyped as the "nerds" of the athlete world. Therefore, I was interested in whether cross country and track athletes are truly more academically achieving than athletes who participate in other sports. When I looked at both genders combined for the three NCAA sports that I participate in, the average APR score for each sport was slightly lower than the overall average four-year score across all NCAA teams. This was surprising to me because I expected my sports to be more academically achieving than other sports. However, a reason that it may be lower is that a lot of runners compete all three seasons compared to other sports where most athletes compete in only one season. The amount of travel time and high-intensity training that comes with being a tri-varsity athlete means that there is less time available to focus on academics. Because this study looks at only scholarship athletes, which are DI and DII, I would be interested in seeing if DIII cross country and track teams also have weaker academic performance than other NCAA sports?
+
+Furthermore, I am interested in looking at the APR score differences between genders for the three sports. A month ago, [an article was published on the Middlebury Athletics page](https://athletics.middlebury.edu/sports/mxc/2019-20/releases/20200204ealuy9) which announced that our men’s cross country team had the highest GPA average for NCAA DIII men’s cross country with a 3.80 average. However, although our women’s team had a higher GPA average of 3.81, we had tied for fourth in NCAA DIII women’s cross country. Therefore, I hypothesized that female cross country and track athletes outperform male cross-country and track athletes in the classroom. My hypothesis was confirmed by this study with female cross country, indoor, and outdoor track teams have higher APR scores than the male teams. Furthermore, for all three sports, the female teams’ APR scores were higher than the NCAA average, whereas the men’s teams all had lower than average APR scores. 
+
+I was also interested to see if there were differences between the APR scores for the track teams versus the cross country teams. Typically, cross country runners also participate in track, but not all track athletes participate in cross country. The results were quite interesting. The women’s cross country APR scores were the highest, across all three sports and genders, but in contrast, men’s cross country had the lowest average APR score. Therefore if it is assumed that cross country runners also run track, it can be concluded that cross country women bring up women’s track team APR scores, but male cross-country runners bring down men’s track team APR scores. Therefore, I am interested in further studying why female distance runners are more academically inclined than track sprinters, jumpers, and throwers? And why are male distance runners are less academically inclined than track sprinters, jumpers, and throwers?
